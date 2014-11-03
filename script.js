@@ -127,27 +127,38 @@ function selectionModal () {
 
 function baseList () {
     'use strict';
+    App.Views.EventListRowView = App.Views.BaseListRowView.extend({
+      templateRow: Handlebars.compile($('#ListRowEvents').html()),
+      alertMsg: function(){
+        alert('this is a different message');
+      }
+    });
     var tests = createTestCollection(),
         list = new App.Views.BaseListView({
-        collection:tests
-    });
+                  collection:tests
+              });
     list.render();
 }
 
 function eventList () {
     App.Views.EventListRowView = App.Views.BaseListRowView.extend({
       templateRow: Handlebars.compile($('#ListRowEvents').html()),
-    });
-    App.Views.EventListView = App.Views.BaseListView.extend({
-      listRow: function(){return new App.Views.EventListRowView({model:this.model})},
+      alertMsg: function(){
+        alert('this is a different message');
+      }
     });
 
     var tests = createTestCollection(),
-        list = new App.Views.EventListView({
-            el:'.listDisplay',
+        list = new App.Views.BaseListView({
             collection:tests,
+            rowView: App.Views.EventListRowView
         });
     list.render();
+    list.add(new App.Models.TestModel({
+              title:'blargh',
+              description: ' a well done blargh',
+              buttonName: 'for the blargh'
+            }));
 }
 
 function createTestCollection(){
